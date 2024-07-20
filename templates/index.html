@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/style.css">
+  <title>Menu Items</title>
+</head>
+<body>
+  <h2>Menu Items</h2>
+
+  <label for="file_upload">Upload file</label>
+  <input type="file" id="file_upload">
+  <button id="uploadFileBtn">Upload</button>
+</body>
+<script>
+  const uploadFileBtn = document.getElementById("uploadFileBtn");
+  const uploadFile = document.getElementById("file_upload");
+
+  uploadFileBtn.addEventListener("click", function (e) {
+    const file = uploadFile.files[0];
+
+    if (!file) {
+      console.error("No file selected");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    fetch("/api/upload_file", {
+      method: "POST",
+      body: formData,
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+
+</script>
+<script src="/static/script.js"></script>
+</html>
